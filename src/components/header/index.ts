@@ -6,14 +6,14 @@ import LogoImg from '@/assets/images/logo.png'
 
 export const Container = styled.View`
   height: ${({ theme }) => theme.headerHeight}px;
-  background-color: ${({ theme }) => theme.colors.secondary700};
+  background-color: ${({ theme }) => theme.colors.gray700};
   align-items: center;
   flex-direction: row;
   padding-left: 16px;
   padding-right: 16px;
 `
 export const SafeAreaView = styled.SafeAreaView`
-  background-color: ${({ theme }) => theme.colors.secondary700};
+  background-color: ${({ theme }) => theme.colors.gray700};
 `
 export const GoBackIcon = styled(ChevronLeft).attrs(() => ({
   size: 32,

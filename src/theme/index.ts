@@ -1,10 +1,10 @@
 export const theme = {
   colors: {
     white: '#FFFFFF',
-    primary700: '#e84531',
-    primary500: '#ED6A5A',
-    secondary500: '#0F5257',
-    secondary700: '#0c4145',
+    primary700: '#dda520',
+    primary500: '#E3B23C',
+    secondary500: '#ED6A5A',
+    secondary700: '#e84531',
     gray700: '#121214',
     gray600: '#202024',
     gray500: '#29292E',

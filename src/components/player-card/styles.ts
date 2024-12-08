@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components/native'
 export const Container = styled.View`
   width: 100%;
   height: 56px;
-  background-color: ${({ theme }) => theme.COLORS.GRAY_500};
+  background-color: ${({ theme }) => theme.colors.gray400};
   border-radius: 6px;
   flex-direction: row;
   align-items: center;
@@ -14,15 +14,15 @@ export const Container = styled.View`
 export const Name = styled.Text`
   flex: 1;
   ${({ theme }) => css`
-    font-size: ${theme.FONT_SIZE.MD}px;
-    color: ${theme.COLORS.GRAY_200};
-    font-family: ${theme.FONT_FAMILY.REGULAR};
+    font-size: ${theme.fontSize.md}px;
+    color: ${theme.colors.gray200};
+    font-family: ${theme.fontFamily.regular};
   `}
 `
 
 export const Icon = styled(MaterialIcons).attrs(({ theme }) => ({
   size: 24,
-  color: theme.COLORS.GRAY_200
+  color: theme.colors.gray200
 }))`
   margin-left: 16px;
   margin-right: 4px;

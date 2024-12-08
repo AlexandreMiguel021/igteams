@@ -1,5 +1,5 @@
-import { useCallback } from 'react'
-import { FlatList, ListRenderItem } from 'react-native'
+import { useCallback, useState } from 'react'
+import { FlatList, ListRenderItem, View } from 'react-native'
 import styled from 'styled-components/native'
 
 import { Button } from '@/components/button'
@@ -8,10 +8,13 @@ import { Filter } from '@/components/filter'
 import { Highlight } from '@/components/highlight'
 import { Input } from '@/components/input'
 import { ListEmpty } from '@/components/list-empty'
+import { PlayerCard } from '@/components/player-card'
 
 export default function NewGroup() {
-  const renderPersonItem: ListRenderItem<string> = useCallback(() => {
-    return <></>
+  const [players] = useState(['Alexandre'])
+
+  const renderPersonItem: ListRenderItem<string> = useCallback(({ item: player }) => {
+    return <PlayerCard name={player} onRemove={() => {}} />
   }, [])
 
   const renderFilterItem: ListRenderItem<string> = useCallback(({ item: filter }) => {
@@ -25,20 +28,25 @@ export default function NewGroup() {
         <Input placeholder="Nome da pessoa" />
         <ButtonIcon icon="add" />
       </Form>
+
+      <View>
+        <FlatList
+          data={['time a', 'time b']}
+          renderItem={renderFilterItem}
+          keyExtractor={(item) => item}
+          horizontal
+        />
+      </View>
+
       <FlatList
-        data={['time a', 'time b']}
-        renderItem={renderFilterItem}
-        keyExtractor={(item) => item}
-        horizontal
-      />
-      <FlatList
-        data={[]}
+        data={players}
         renderItem={renderPersonItem}
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <ListEmpty message="Nenhuma pessoa para ser listada, adicione uma pessoa na lista." />
         }
       />
-      <Button title="Criar" />
+      <Button title="Remover turma" type="secondary" />
     </Container>
   )
 }
