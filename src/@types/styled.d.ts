@@ -19,6 +19,7 @@ declare module 'styled-components/native' {
       gray200: string
       gray100: string
     }
+    headerHeight: number
     fontFamily: {
       regular: string
       bold: string

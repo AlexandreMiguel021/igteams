@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import LogoImg from '@/assets/images/logo.png'
 
 export const Container = styled.View`
-  height: 72px;
+  height: ${({ theme }) => theme.headerHeight}px;
   background-color: ${({ theme }) => theme.colors.secondary700};
   align-items: center;
   flex-direction: row;

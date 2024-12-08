@@ -17,6 +17,7 @@ export const theme = {
     regular: 'Roboto_400Regular',
     bold: 'Roboto_700Bold'
   },
+  headerHeight: 72,
   fontSize: {
     sm: 14,
     md: 16,

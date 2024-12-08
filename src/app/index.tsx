@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
@@ -8,11 +9,22 @@ import { Highlight } from '@/components/highlight'
 import { ListEmpty } from '@/components/list-empty'
 
 export default function Home() {
+  const { navigate } = useRouter()
   const [groups] = useState(['Galera da rocket'])
 
-  const renderItem: ListRenderItem<string> = useCallback(({ item }) => {
-    return <GroupCard title={item} />
-  }, [])
+  const renderItem: ListRenderItem<string> = useCallback(
+    ({ item }) => {
+      return (
+        <GroupCard
+          title={item}
+          onPress={() => {
+            navigate('/players')
+          }}
+        />
+      )
+    },
+    [navigate]
+  )
 
   return (
     <Container>
@@ -26,7 +38,7 @@ export default function Home() {
           <ListEmpty message="Não há turmas para serem listadas, que tal cadastrar a primeira turma?" />
         }
       />
-      <Button title="Criar nova turma" />
+      <Button title="Criar nova turma" link={{ href: '/new-group' }} />
     </Container>
   )
 }
