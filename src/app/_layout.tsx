@@ -3,6 +3,7 @@ import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
+import { SafeAreaView } from 'react-native'
 import { ThemeProvider } from 'styled-components/native'
 
 import * as Header from '@/components/header'
@@ -44,7 +45,10 @@ export default function HomeLayout() {
             )
           }
         }}
-      />
+      >
+        <Stack.Screen name="index" />
+      </Stack>
+      <SafeAreaView style={{ backgroundColor: theme.colors.gray700 }} />
     </ThemeProvider>
   )
 }
