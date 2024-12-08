@@ -1,6 +1,7 @@
-import { Event } from '@/models/events'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+
+import { Event } from '@/models/events'
 
 const eventsList: Event[] = [
   new Event({ title: 'Birthday Party', subtitle: 'A fun celebration', id: '1', key: '1' }),

@@ -1,48 +1,50 @@
-import { colors } from '@/theme/colors'
-import { Stack, type ErrorBoundaryProps } from 'expo-router'
-import { Try } from 'expo-router/build/views/Try'
+import { Roboto_400Regular, Roboto_700Bold, useFonts } from '@expo-google-fonts/roboto'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { useEffect } from 'react'
+import { ThemeProvider } from 'styled-components/native'
 
-export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.teal500,
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8
-      }}
-    >
-      <Text style={{ color: colors.lightOffWhite, fontSize: 18 }}>Ops... Ocorreu um erro!</Text>
-      <Text style={{ color: colors.lightOffWhite, fontSize: 14 }}>{error.message}</Text>
-      <TouchableOpacity style={{ backgroundColor: colors.teal300, padding: 8, borderRadius: 4 }}>
-        <Text onPress={retry} style={{ color: colors.lightOffWhite, fontSize: 14 }}>
-          Tentar novamente?
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+import * as Header from '@/components/header'
+import { theme } from '@/theme'
 
 export default function HomeLayout() {
+  const [loaded, error] = useFonts({
+    Roboto_400Regular,
+    Roboto_700Bold
+  })
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync()
+    }
+  }, [loaded, error])
+
+  if (!loaded && !error) {
+    return null
+  }
+
   return (
-    <>
-      <Try catch={ErrorBoundary}>
-        <StatusBar style="light" />
-        <Stack
-          screenOptions={{
-            headerStyle: { backgroundColor: colors.teal600 },
-            headerTintColor: colors.lightOffWhite,
-            headerTitleStyle: { fontWeight: 'bold' }
-          }}
-        >
-          <Stack.Screen name="index" options={{ title: 'Eventos' }} />
-          <Stack.Screen name="create-edit-event" options={{ title: 'Criar Evento' }} />
-          <Stack.Screen name="event-details/[id]" options={{ title: 'Detalhes Evento' }} />
-        </Stack>
-      </Try>
-    </>
+    <ThemeProvider theme={theme}>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          header: (props) => {
+            return (
+              <Header.SafeAreaView>
+                <Header.Container>
+                  {props.back && (
+                    <Header.GoBackButton onPress={props.navigation.goBack}>
+                      <Header.GoBackIcon />
+                    </Header.GoBackButton>
+                  )}
+                  <Header.Logo />
+                </Header.Container>
+              </Header.SafeAreaView>
+            )
+          }
+        }}
+      />
+    </ThemeProvider>
   )
 }
