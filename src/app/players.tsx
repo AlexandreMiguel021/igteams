@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { Alert, FlatList, ListRenderItem, View } from 'react-native'
 import Animated, { CurvedTransition, FadeIn, FadeInUp, FadeOut } from 'react-native-reanimated'
 import styled from 'styled-components/native'
@@ -19,13 +19,11 @@ export default function NewGroup() {
   const router = useRouter()
 
   const { groupId }: { groupId: string } = useLocalSearchParams()
-  const { groups, deleteGroup, deletePlayer } = useGroup()
+  const { groups, deleteGroup } = useGroup()
 
   const [filterGroupId, setFilterGroupId] = useState(groupId)
 
-  const currentGroup = useMemo(() => {
-    return groups.find((group) => group.id === filterGroupId)
-  }, [filterGroupId, groups])
+  const currentGroup = groups.find((group) => group.id === filterGroupId)
 
   if (!currentGroup) {
     throw new Error('Grupo não encontrado!')
@@ -45,28 +43,15 @@ export default function NewGroup() {
     ])
   }
 
-  const handleDeletePlayer = useCallback(
-    (playerId: string) => {
-      try {
-        deletePlayer(currentGroup.players[2].id, filterGroupId)
-      } catch (error) {
-        if (error instanceof Error) {
-          Alert.alert('Erro', error.message)
-        }
-      }
-    },
-    [deletePlayer, currentGroup.players, filterGroupId]
-  )
-
   const renderPersonItem: ListRenderItem<Player> = useCallback(
     ({ item: player }) => {
       return (
         <Animated.View entering={FadeInUp}>
-          <PlayerCard name={player.name} onRemove={handleDeletePlayer} />
+          <PlayerCardController filterGroupId={filterGroupId} player={player} />
         </Animated.View>
       )
     },
-    [handleDeletePlayer]
+    [filterGroupId]
   )
 
   const renderFilterItem: ListRenderItem<Group> = useCallback(
@@ -103,6 +88,7 @@ export default function NewGroup() {
         itemLayoutAnimation={CurvedTransition}
         data={currentGroup.players}
         renderItem={renderPersonItem}
+        keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <ListEmpty message="Nenhuma pessoa para ser listada, adicione uma pessoa na lista." />
@@ -113,6 +99,10 @@ export default function NewGroup() {
   )
 }
 
+/**
+ * `PlayersForm` is a form component that allows adding a new player to a specific filter group.
+ * The component ensures that typing in the input does not cause unnecessary rerenders of the parent component.
+ */
 function PlayersForm({ filterGroupId }: { filterGroupId: string }) {
   const { addPlayer } = useGroup()
   const [playerName, setPlayerName] = useState('')
@@ -140,6 +130,34 @@ function PlayersForm({ filterGroupId }: { filterGroupId: string }) {
     </Form>
   )
 }
+
+type PlayerCardControllerProps = {
+  player: Player
+  filterGroupId: string
+}
+
+/**
+ * `PlayerCardController` is a component designed to manage player removal from the list efficiently,
+ * preventing unnecessary rerenders when a player is added or deleted. It encapsulates the deletion logic
+ * to ensure that removing a player doesn't trigger a full re-render of the list.
+ */
+const PlayerCardController = memo(({ player, filterGroupId }: PlayerCardControllerProps) => {
+  const deletePlayer = useGroup((state) => state.deletePlayer)
+
+  const handleDeletePlayer = useCallback(() => {
+    try {
+      deletePlayer(player.id, filterGroupId)
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert('Erro', error.message)
+      }
+    }
+  }, [deletePlayer, filterGroupId, player.id])
+
+  return <PlayerCard player={player} onRemove={handleDeletePlayer} />
+})
+
+PlayerCardController.displayName = 'PlayerCardController'
 
 const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.gray700};

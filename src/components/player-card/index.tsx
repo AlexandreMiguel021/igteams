@@ -1,17 +1,19 @@
+import { Player } from '@/models/player'
+
 import { ButtonIcon } from '../button-icon'
 
 import { Container, Icon, Name } from './styles'
 
 type PlayerCardProps = {
-  name: string
+  player: Player
   onRemove: () => void
 }
 
-export function PlayerCard({ name, onRemove }: PlayerCardProps) {
+export function PlayerCard({ player, onRemove }: PlayerCardProps) {
   return (
     <Container>
       <Icon name="person" />
-      <Name>{name}</Name>
+      <Name>{player.name}</Name>
       <ButtonIcon icon="close" type="secondary" onPress={onRemove} />
     </Container>
   )
