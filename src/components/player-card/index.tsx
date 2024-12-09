@@ -1,5 +1,3 @@
-import { memo } from 'react'
-
 import { ButtonIcon } from '../button-icon'
 
 import { Container, Icon, Name } from './styles'
@@ -9,7 +7,7 @@ type PlayerCardProps = {
   onRemove: () => void
 }
 
-export function _PlayerCard({ name, onRemove }: PlayerCardProps) {
+export function PlayerCard({ name, onRemove }: PlayerCardProps) {
   return (
     <Container>
       <Icon name="person" />
@@ -18,5 +16,3 @@ export function _PlayerCard({ name, onRemove }: PlayerCardProps) {
     </Container>
   )
 }
-
-export const PlayerCard = memo(_PlayerCard)

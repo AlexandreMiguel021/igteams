@@ -48,21 +48,21 @@ export default function NewGroup() {
   const handleDeletePlayer = useCallback(
     (playerId: string) => {
       try {
-        deletePlayer(playerId, filterGroupId)
+        deletePlayer(currentGroup.players[2].id, filterGroupId)
       } catch (error) {
         if (error instanceof Error) {
           Alert.alert('Erro', error.message)
         }
       }
     },
-    [deletePlayer, filterGroupId]
+    [deletePlayer, currentGroup.players, filterGroupId]
   )
 
   const renderPersonItem: ListRenderItem<Player> = useCallback(
     ({ item: player }) => {
       return (
         <Animated.View entering={FadeInUp}>
-          <PlayerCard name={player.name} onRemove={() => handleDeletePlayer(player.id)} />
+          <PlayerCard name={player.name} onRemove={handleDeletePlayer} />
         </Animated.View>
       )
     },
