@@ -50,7 +50,7 @@ const useGroup = create<GroupStore>()(
       },
       addGroup: (newGroup) => {
         set((state) => {
-          if (!newGroup.name) {
+          if (!newGroup.name.trim().length) {
             throw new Error('Informe o nome da turma!')
           }
 
@@ -76,7 +76,7 @@ const useGroup = create<GroupStore>()(
       },
       addPlayer: (newPlayer, groupId) => {
         set((state) => {
-          if (!newPlayer.name) {
+          if (!newPlayer.name.trim().length) {
             throw new Error('Informe o nome do jogador!')
           }
 
