@@ -86,13 +86,17 @@ const useGroup = create<GroupStore>()(
             throw new Error('Não foi adicionar Jogador!')
           }
 
+          const playerNames = new Set()
+
           state.groups.forEach((group) => {
             group.players.forEach((player) => {
-              if (player.name === newPlayer.name) {
-                throw new Error('Já existe um jogador com esse nome!')
-              }
+              playerNames.add(player.name)
             })
           })
+
+          if (playerNames.has(newPlayer.name)) {
+            throw new Error('Já existe um jogador com esse nome!')
+          }
 
           state.groups[groupInd].players.push(newPlayer)
         })
